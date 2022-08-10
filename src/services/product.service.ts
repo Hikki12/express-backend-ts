@@ -1,5 +1,7 @@
 import { faker } from '@faker-js/faker';
 import { throws } from 'assert';
+import boom from '@hapi/boom';
+
 
 export class ProductService {
   products: Product[] = [];
@@ -16,6 +18,7 @@ export class ProductService {
         name: faker.commerce.productName(),
         price: parseInt(faker.commerce.price(), 10),
         image: faker.image.imageUrl(),
+        isBlock: faker.datatype.boolean()
       });
     }
   }
@@ -37,13 +40,20 @@ export class ProductService {
   }
 
   async findOne(id: string | number) {
-    return this.products.find(item => item.id == id);
+    const product = this.products.find(item => item.id == id);
+    if(!product){
+      throw boom.notFound("Product not found");
+    }
+    if(product.isBlock){
+      throw boom.conflict("Product is block");
+    }
+    return product;
   }
 
   async update(id: string | number, changes: Product) {
     const index = this.products.findIndex(item => item.id == id);
     if(index === -1){
-      throw new Error(`Product not found`);
+      throw boom.notFound("Product not found");
     }
     const product = this.products[index];
     this.products[index] = {
@@ -55,7 +65,7 @@ export class ProductService {
   async delete(id: string | number) {
     const index = this.products.findIndex(item => item.id == id);
     if(index === -1){
-      throw new Error(`Product not found`);
+      throw boom.notFound("Product not found");
     }
     this.products.splice(index, 1);
     return { id };

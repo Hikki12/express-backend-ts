@@ -17,10 +17,14 @@ router.get('/filter', (req: Request, res: Response) => {
 });
 
 
-router.get('/:id', async (req: Request, res: Response) => {
-  const { id } = req.params;
-  const product = await productService.findOne(id);
-  res.json(product);
+router.get('/:id', async (req: Request, res: Response, next) => {
+  try{
+    const { id } = req.params;
+    const product = await productService.findOne(id);
+    res.json(product);
+  } catch(error){
+    next(error);
+  }
 });
 
 
@@ -34,16 +38,14 @@ router.post('/', async (req, res) => {
 });
 
 
-router.patch('/:id', async (req, res) => {
+router.patch('/:id', async (req, res, next) => {
   try{
     const { id }= req.params;
     const body = req.body;
     const product = await productService.update(id, body);
     res.json(product);
   } catch(error){
-    res.status(404).json({
-      message: error // -> error.message
-    })
+    next(error);
   }
 });
 
