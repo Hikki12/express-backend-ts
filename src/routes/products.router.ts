@@ -1,20 +1,14 @@
 import express, { Express, Request, Response } from 'express';
-import { faker } from '@faker-js/faker';
+import { ProductService } from '../services/product.service';
+
+
 const router = express.Router();
+const productService = new ProductService();
 
 
-router.get('/', (req: Request, res: Response) => {
-  const products = [];
-  const { size } = req.query;
-  const limit = size || 10;
-  for(let i = 0; i < limit; i++){
-    products.push({
-      name: faker.commerce.productName(),
-      price: parseInt(faker.commerce.price(), 10),
-      image: faker.image.imageUrl(),
-    });
-    res.json(products);
-  }
+router.get('/', async (req: Request, res: Response) => {
+  const products = await productService.find();
+  res.json(products);
 });
 
 
@@ -23,23 +17,42 @@ router.get('/filter', (req: Request, res: Response) => {
 });
 
 
-router.get('/:id', (req: Request, res: Response) => {
+router.get('/:id', async (req: Request, res: Response) => {
   const { id } = req.params;
-  res.json({
-    id,
-    name: 'Product x',
-    price: 1000
-  });
+  const product = await productService.findOne(id);
+  res.json(product);
 });
 
-router.post('/', (req, res) => {
+
+router.post('/', async (req, res) => {
   const body = req.body;
-  res.json({
+  const product = await productService.create(body);
+  res.status(201).json({
     message: 'created',
-    data: body
+    data: product
   });
 });
 
+
+router.patch('/:id', async (req, res) => {
+  try{
+    const { id }= req.params;
+    const body = req.body;
+    const product = await productService.update(id, body);
+    res.json(product);
+  } catch(error){
+    res.status(404).json({
+      message: error // -> error.message
+    })
+  }
+});
+
+
+router.delete('/:id', (req, res) => {
+  const { id }= req.params;
+  const rta = productService.delete(id);
+  res.json(rta);
+});
 
 
 export { router as productsRouter }
