@@ -1,17 +1,17 @@
-import express, { Express, Request, Response } from 'express';
+import express, { Express, Request, Response } from 'express'
 
-const router = express.Router();
+const router = express.Router()
 
 router.get('/', (req: Request, res: Response) => {
-  const { limit, offset } = req.query;
+  const { limit, offset } = req.query
   if (limit && offset) {
     res.json({
       limit,
-      offset
-    });
+      offset,
+    })
   } else {
-    res.send('There is not parameters');
+    res.send('There is not parameters')
   }
-});
+})
 
-export { router as usersRouter };
+export { router as usersRouter }

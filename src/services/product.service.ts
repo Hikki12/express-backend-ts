@@ -1,25 +1,24 @@
-import { faker } from '@faker-js/faker';
-import { throws } from 'assert';
-import boom from '@hapi/boom';
-
+import { faker } from '@faker-js/faker'
+import { throws } from 'assert'
+import boom from '@hapi/boom'
 
 export class ProductService {
-  products: Product[] = [];
+  products: Product[] = []
 
-  constructor(){
-    this.generate();
+  constructor() {
+    this.generate()
   }
 
   generate() {
-    const limit = 100;
-    for(let i = 0; i < limit; i++){
+    const limit = 100
+    for (let i = 0; i < limit; i++) {
       this.products.push({
         id: faker.datatype.uuid(),
         name: faker.commerce.productName(),
         price: parseInt(faker.commerce.price(), 10),
         image: faker.image.imageUrl(),
-        isBlock: faker.datatype.boolean()
-      });
+        isBlock: faker.datatype.boolean(),
+      })
     }
   }
 
@@ -28,46 +27,46 @@ export class ProductService {
       id: faker.datatype.uuid(),
       name,
       price,
-      image
+      image,
     }
-    this.products.push(product);
-    return product;
+    this.products.push(product)
+    return product
   }
 
-  async find(){
-    await new Promise((resolve, reject) => setTimeout(resolve, 3000));
-    return this.products;
+  async find() {
+    await new Promise((resolve, reject) => setTimeout(resolve, 3000))
+    return this.products
   }
 
   async findOne(id: string | number) {
-    const product = this.products.find(item => item.id == id);
-    if(!product){
-      throw boom.notFound("Product not found");
+    const product = this.products.find(item => item.id == id)
+    if (!product) {
+      throw boom.notFound('Product not found')
     }
-    if(product.isBlock){
-      throw boom.conflict("Product is block");
+    if (product.isBlock) {
+      throw boom.conflict('Product is block')
     }
-    return product;
+    return product
   }
 
   async update(id: string | number, changes: Product) {
-    const index = this.products.findIndex(item => item.id == id);
-    if(index === -1){
-      throw boom.notFound("Product not found");
+    const index = this.products.findIndex(item => item.id == id)
+    if (index === -1) {
+      throw boom.notFound('Product not found')
     }
-    const product = this.products[index];
+    const product = this.products[index]
     this.products[index] = {
       ...product,
-      ...changes
+      ...changes,
     }
   }
 
   async delete(id: string | number) {
-    const index = this.products.findIndex(item => item.id == id);
-    if(index === -1){
-      throw boom.notFound("Product not found");
+    const index = this.products.findIndex(item => item.id == id)
+    if (index === -1) {
+      throw boom.notFound('Product not found')
     }
-    this.products.splice(index, 1);
-    return { id };
+    this.products.splice(index, 1)
+    return { id }
   }
 }
