@@ -7,4 +7,9 @@ A clean Architecture Backend, made with express and Typescript.
 npm run dev
 ```
 
+## Docker Compose
+```
+docker compose up -d
+```
+
 

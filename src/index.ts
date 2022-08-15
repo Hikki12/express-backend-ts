@@ -1,33 +1,32 @@
-import express, { Express, Request, Response } from 'express';
-import dotenv from 'dotenv';
+import 'reflect-metadata'
+import express, { Express, Request, Response } from 'express'
+
 import { RouterApi } from './routes'
-import cors from 'cors';
+import cors from 'cors'
 import {
   boomErrorHandler,
   errorHandler,
   logErrors,
 } from './middlewares/error.handler'
-
-dotenv.config()
+import { config } from './config'
 
 const app: Express = express()
-const port = process.env.PORT
+const port = config.PORT
 
 // middlewares
 app.use(express.json())
-const whitelist = ['http://localhost:8080', 'https://myapp.co'];
+const whitelist = ['http://localhost:8080', 'https://myapp.co']
 const options = {
   origin: (origin: string | undefined, callback: Function) => {
-    origin = origin || "";
-    if(whitelist.includes(origin)){
-      callback(null, true);
-    }else{
-      callback(new Error('Not allowed'));
+    origin = origin || ''
+    if (whitelist.includes(origin)) {
+      callback(null, true)
+    } else {
+      callback(new Error('Not allowed'))
     }
-
-  }
+  },
 }
-app.use(cors(options));
+app.use(cors(options))
 
 // Routes config
 RouterApi(app)

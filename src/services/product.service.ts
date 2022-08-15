@@ -1,12 +1,23 @@
 import { faker } from '@faker-js/faker'
 import { throws } from 'assert'
 import boom from '@hapi/boom'
+import { pool } from '../libs/postgres.pool'
+import { Pool } from 'pg'
+import { AppDataSource } from '../data-source'
+import { Product } from '../entity/product'
+
+
+const productRepository = AppDataSource.getRepository(Product)
+
 
 export class ProductService {
   products: Product[] = []
+  pool: Pool
 
   constructor() {
     this.generate()
+    this.pool = pool
+    this.pool.on('error', err => console.error(err))
   }
 
   generate() {
@@ -34,8 +45,10 @@ export class ProductService {
   }
 
   async find() {
-    await new Promise((resolve, reject) => setTimeout(resolve, 3000))
-    return this.products
+    const query = 'SELECT * FROM products'
+    await new Promise((resolve, reject) => setTimeout(resolve, 3000));
+    // const products = await productRepository.find()
+    // return this.products
   }
 
   async findOne(id: string | number) {
