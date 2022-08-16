@@ -39,5 +39,5 @@ export function boomErrorHandler(
     const { output } = err
     res.status(output.statusCode).json(output.payload)
   }
-  next(err)
+  next(err);
 }

@@ -10,9 +10,13 @@ import {
 const router = express.Router()
 const productService = new ProductService()
 
-router.get('/', async (req: Request, res: Response) => {
-  const products = await productService.find()
-  res.json(products)
+router.get('/', async (req: Request, res: Response, next) => {
+  try{
+    const products = await productService.find()
+    res.json(products)
+  }catch(error){
+    next(error);
+  }
 })
 
 router.get('/filter', (req: Request, res: Response) => {
@@ -24,7 +28,7 @@ router.get(
   validatorHandler(getProductSchema, 'params'),
   async (req: Request, res: Response, next) => {
     try {
-      const { id } = req.params
+      const { id } = req.params;
       const product = await productService.findOne(id)
       res.json(product)
     } catch (error) {
@@ -36,13 +40,17 @@ router.get(
 router.post(
   '/',
   validatorHandler(createProductSchema, 'body'),
-  async (req, res) => {
-    const body = req.body
-    const product = await productService.create(body)
-    res.status(201).json({
-      message: 'created',
-      data: product,
-    })
+  async (req: Request, res: Response, next) => {
+    try {
+      const body = req.body
+      const product = await productService.create(body)
+      res.status(201).json({
+        message: 'created',
+        data: product,
+      })
+    }catch (error) {
+      next(error);
+    }
   }
 )
 
@@ -50,7 +58,7 @@ router.patch(
   '/:id',
   validatorHandler(getProductSchema, 'params'),
   validatorHandler(updateProductSchema, 'body'),
-  async (req, res, next) => {
+  async (req: Request, res: Response, next) => {
     try {
       const { id } = req.params
       const body = req.body
@@ -62,10 +70,14 @@ router.patch(
   }
 )
 
-router.delete('/:id', (req, res) => {
-  const { id } = req.params
-  const rta = productService.delete(id)
-  res.json(rta)
+router.delete('/:id', (req: Request, res: Response, next) => {
+  try {
+    const { id } = req.params
+    const rta = productService.delete(id)
+    res.json(rta)
+  }catch (error) {
+    next(error);
+  }
 })
 
 export { router as productsRouter }

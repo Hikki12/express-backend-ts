@@ -14,19 +14,22 @@ const app: Express = express()
 const port = config.PORT
 
 // middlewares
-app.use(express.json())
-const whitelist = ['http://localhost:8080', 'https://myapp.co']
+app.use(express.json());
+
+const whitelist = ['http://localhost:3000', 'http://localhost:5432', "https://www.thunderclient.com"]
 const options = {
   origin: (origin: string | undefined, callback: Function) => {
-    origin = origin || ''
+    origin = origin || '';
+    console.log('-----> origin: ', origin);
     if (whitelist.includes(origin)) {
       callback(null, true)
     } else {
-      callback(new Error('Not allowed'))
+      callback(new Error(`Not allowed Host: ${origin}`))
     }
   },
 }
-app.use(cors(options))
+
+// app.use(cors(options));
 
 // Routes config
 RouterApi(app)

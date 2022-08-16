@@ -1,8 +1,8 @@
-# Created by https://www.toptal.com/developers/gitignore/api/node,macos,linux,windows
-# Edit at https://www.toptal.com/developers/gitignore?templates=node,macos,linux,windows
-
+# Created by https://www.toptal.com/developers/gitignore/api/node,macos,windows,linux
+# Edit at https://www.toptal.com/developers/gitignore?templates=node,macos,windows,linux
 
 postgres_data/
+pgadmin/
 
 ### Linux ###
 *~
@@ -218,4 +218,4 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
-# End of https://www.toptal.com/developers/gitignore/api/node,macos,linux,windows
+# End of https://www.toptal.com/developers/gitignore/api/node,macos,windows,linux
