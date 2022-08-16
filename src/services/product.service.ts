@@ -13,16 +13,8 @@ export class ProductService {
   constructor() {
   }
 
-  create({ name, price, image }: Product) {
-    const product = {
-      id: faker.datatype.number(),
-      name,
-      price,
-      image,
-      isBlock: false,
-    }
-    // this.products.push(product)
-    return product
+  async create(product: Product) {
+    return await productRepository.create(product)
   }
 
   async find() {
@@ -41,15 +33,11 @@ export class ProductService {
   }
 
   async update(id: string, changes: Product) {
-      throw boom.notFound('Product not found')
+    const product = await this.findOne(id);
+    return await productRepository.update(product.id, changes);
   }
 
   async delete(id: string) {
-    const index = this.products.findIndex(item => item.id == id)
-    if (index === -1) {
-      throw boom.notFound('Product not found')
-    }
-    this.products.splice(index, 1)
-    return { id }
+    return await productRepository.delete({ id })
   }
 }

@@ -2,8 +2,6 @@ import { DataSource } from "typeorm"
 import  { config } from "./config";
 import { Product } from "./entity/product.entity";
 
-console.log("config: ", config);
-console.log("dirname: ", __dirname);
 
 export const AppDataSource = new DataSource({
     type: "postgres",
