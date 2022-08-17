@@ -16,9 +16,7 @@ export const AppDataSource = new DataSource({
       Product
     ],
     subscribers: [],
-    migrations: [
-      "migration/*.js"
-    ]
+    migrations: []
 });
 
 

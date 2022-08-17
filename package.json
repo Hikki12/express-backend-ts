@@ -10,9 +10,8 @@
       "dev": "concurrently \"npx tsc --watch\" \"nodemon -q dist/index.js\"",
       "lint": "eslint --ignore-path .eslintignore --ext .js,.ts .",
       "format": "prettier --ignore-path .gitignore --write \"**/*.+(js|ts|json)\"",
-      "typeorm:init": "npm run build && npx typeorm init --database postgres",
       "typeorm": "typeorm-ts-node-commonjs",
-      "typeorm:migrate": "npx typeorm-ts-node-commonjs migration:run"
+      "typeorm:init": "npm run build && npx typeorm init --database postgres"
    },
    "keywords": [],
    "author": "",

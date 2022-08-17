@@ -27,4 +27,10 @@ To execute postgres DB and PGadmin run the following command:
 docker compose up -d
 ```
 
+## Migrations
+To generate a migration execute:
+```
+npm run typeorm -- migration:generate ./src/migrations/migration-name -d ./src/data-source.ts
+```
+
 
