@@ -1,4 +1,3 @@
-import { faker } from '@faker-js/faker'
 import boom from '@hapi/boom'
 import { AppDataSource } from '../data-source'
 import { Product } from '../entity/product.entity'
@@ -8,8 +7,6 @@ const productRepository = AppDataSource.getRepository(Product);
 
 
 export class ProductService {
-  products: Product[] = []
-
   constructor() {
   }
 

@@ -1,4 +1,4 @@
-import express, { Express, Request, Response } from 'express'
+import express, { Request, Response } from 'express'
 import { ProductService } from '../services/product.service'
 import { validatorHandler } from '../middlewares/validator.handler'
 import {
